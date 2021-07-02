@@ -43,7 +43,7 @@ export default function Form2(props) {
         try {
           const res = await axios({
             method: 'post',
-            url: 'https://api.imgur.com/3/upload',
+            url: 'https://api.imgur.com/3/image',
             headers: {
               Authorization: 'Client-ID '+process.env.REACT_APP_IMGUR_CLIENT_ID
             },
