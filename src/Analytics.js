@@ -96,6 +96,8 @@ export default function Analytics() {
             {/* component */}
             {/* <style dangerouslySetInnerHTML={{ __html: "\n    body{background:white!important;}\n" }} /> */}
             <p className="text-lg text-center font-bold m-5">Analytics</p>
+            <p className="text-sm text-center m-5">(Click on column(s) to sort)</p>
+            
             <table className="rounded-t-lg m-5 w-5/6 mx-auto bg-blue-900 text-white shadow-lg">
                 <tbody><tr className="border-b-2 border-red-500 text-center ">
                     <th onClick={() => { setSortedField('firstName'); setDirec(!direc) }} className="px-4 py-3 font-semibold  text-center hover:bg-blue-800 cursor-pointer">{sortedField == 'firstName' ? (direc ? 'Name ↑' : 'Name ↓') : 'Name'}</th>
