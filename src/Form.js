@@ -42,7 +42,7 @@ export default function Form(props) {
         try {
           const res = await axios({
             method: 'post',
-            url: 'https://cors-anywhere.herokuapp.com/https://api.imgur.com/3/upload',
+            url: 'https://api.imgur.com/3/upload',
             headers: {
               Authorization: 'Client-ID '+process.env.REACT_APP_IMGUR_CLIENT_ID
             },
