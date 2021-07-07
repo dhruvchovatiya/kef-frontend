@@ -19,13 +19,11 @@ export default function Home(props) {
     const fetchData = async () => {
 
       try {
-        
-        const result = await axios.get('/api/posts');
-        console.log(result)
-        setPosts(result.data);
-        // console.log(posts)
 
-      } catch(err) {
+        const result = await axios.get('/api/posts');
+        setPosts(result.data);
+
+      } catch (err) {
         console.log(err)
       }
 
@@ -34,18 +32,14 @@ export default function Home(props) {
     fetchData();
   }, [submitted]);
 
-  // console.log(posts)
 
 
   return (
     <div>
-      {console.log(props)}
-      {/* {props.loggedIn &&  <Form msg='Question' setLoggedIn={props.setLoggedIn} />}  */}
-      {props.loggedIn && <Form msg='Question' setLoggedIn={props.setLoggedIn} setSubmitted={setSubmitted} submitted={submitted}/>} 
+      {props.loggedIn && <Form msg='Question' setLoggedIn={props.setLoggedIn} setSubmitted={setSubmitted} submitted={submitted} />}
 
       {posts && posts.slice(0).reverse().map((post) => (
-        <CommentCard msg='View discussion' post={post}/>
-        // <h1>{post._id}</h1>
+        <CommentCard msg='View discussion' post={post} />
       ))}
 
     </div>

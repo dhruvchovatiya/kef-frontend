@@ -1,8 +1,9 @@
 import React from 'react'
-import './Analytics.css'
 import axios from './axios'
 import { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import './formCSS.css'
+
 
 
 
@@ -12,7 +13,8 @@ export default function Analytics() {
 
     const [newUsers, setNewUsers] = useState([])
     const [sortedField, setSortedField] = useState()
-    const [direc, setDirec] = useState(false)
+    const [direc, setDirec] = useState(true)
+    const [fetched, setFetched] = useState(false)
 
 
     if (sortedField !== null) {
@@ -60,11 +62,8 @@ export default function Analytics() {
 
             try {
                 setNewUsers([])
-                // await fetchUsers()
                 const res = await axios.get('/api/users')
 
-                // setUsers(res.data)
-                console.log(res.data)
                 let user
                 for (user of res.data) {
 
@@ -75,10 +74,9 @@ export default function Analytics() {
                     setNewUsers((newUsers) => [...newUsers, newElement])
                 }
 
-                // const temp = newUsers.sort()
+                setFetched(true)
 
-                // setNewUsers([])
-                // setNewUsers(temp)
+
 
             } catch (err) {
                 console.log(err)
@@ -93,12 +91,15 @@ export default function Analytics() {
 
     return (
         <div>
-            {/* component */}
-            {/* <style dangerouslySetInnerHTML={{ __html: "\n    body{background:white!important;}\n" }} /> */}
+
             <p className="text-lg text-center font-bold m-5">Analytics</p>
-            <p className="text-sm text-center m-5">(Click on column(s) to sort)</p>
+            <p className="text-sm text-center m-5">(Click on column(s) to sort, Click on name for user profile)</p>
             
-            <table className="rounded-t-lg m-5 w-5/6 mx-auto bg-blue-900 text-white shadow-lg">
+            {!fetched && <div className="flex justify-center mt-4">
+          <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-8 w-8 "></div>
+        </div>}
+
+            {fetched && <table className="rounded-t-lg m-5 w-5/6 mx-auto bg-blue-900 text-white shadow-lg">
                 <tbody><tr className="border-b-2 border-red-500 text-center ">
                     <th onClick={() => { setSortedField('firstName'); setDirec(!direc) }} className="px-4 py-3 font-semibold  text-center hover:bg-blue-800 cursor-pointer">{sortedField == 'firstName' ? (direc ? 'Name ↑' : 'Name ↓') : 'Name'}</th>
                     <th onClick={() => { setSortedField('posts.length'); setDirec(!direc) }} className="px-4 py-3 font-semibold text-center hover:bg-blue-800 cursor-pointer">{sortedField == 'posts.length' ? (direc ? 'Doubts Asked ↑' : 'Doubts Asked ↓') : 'Doubts Asked'}</th>
@@ -108,21 +109,11 @@ export default function Analytics() {
 
 
 
-                    {/* {users.slice(0).reverse().map(async (user) => (
-                        
-                        // console.log(await getVotes(user._id))
-                        
-                        
-                        
-                        // <h1>{post._id}</h1>
-                    ))} */}
 
 
 
+                    {fetched && newUsers.slice(0).reverse().map((user) => (
 
-                    {newUsers.slice(0).reverse().map((user) => (
-                        // <td msg='View discussion' post={post} />
-                        // <td className="px-4 py-3 text-center text-black">{user.firstName}</td>
 
                         <tr className="bg-white border-b border-gray-200">
                             <td onClick={()=>history.push('/user/'+user._id)} className="px-4 py-3 text-center text-black  hover:bg-red-100 cursor-pointer">{user.firstName + ' ' + user.lastName}</td>
@@ -134,11 +125,9 @@ export default function Analytics() {
                     ))}
 
 
-                </tbody></table>
-            {/* classic design */}
+                </tbody></table>}
 
             <div className="mb-20" />
-            {/* fill for tailwind preview bottom overflow */}
         </div>
 
     )

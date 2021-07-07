@@ -11,7 +11,6 @@ function About() {
                     <img className="h-48 w-full object-contain md:w-48" src={logo} alt="Logo" />
                 </div>
                 <div className="p-8">
-                    {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Cat News</div> */}
                     <a href="#" className="block mt-1 text-lg leading-tight font-medium text-black hover:underline text-center">About Kotak Education Foundation</a>
                     <br/>
                     <p className="mt-2 text-gray-500">Kotak Education Foundation is a non-profit organization set up in 2007, with its headquarters located in Mumbai.</p>

@@ -6,16 +6,16 @@ import axios from './axios'
 
 const loginUser = async (credentials) => {
     try {
-        let res = axios.post('/api/auth/login',credentials)
+        let res = axios.post('/api/auth/login', credentials)
         return res
-    } catch(err) {
+    } catch (err) {
         console.log(err)
     }
 }
 
 
-export default function Login({setLoggedIn}) {
-    
+export default function Login({ setLoggedIn }) {
+
     const history = useHistory()
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -24,30 +24,24 @@ export default function Login({setLoggedIn}) {
     const handleSubmit = async e => {
         e.preventDefault();
         const token = await loginUser({
-          email,
-          password
+            email,
+            password
         });
         const tokenFinal = token.data.data
-        console.log(tokenFinal)
-        if(token.data.status=='error') {
-            console.log(token)
-            // alert('Wrong Email or Password')
+        if (token.data.status == 'error') {
             setWrongCredentials(true)
         } else {
             setLoggedIn(true)
             setWrongCredentials(false)
             localStorage.setItem('token', tokenFinal)
             history.push('/')
-            // alert('successsssss')
         }
-        // setToken(token);
-      }
-    
+    }
+
 
     return (
         <div className="w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800 my-24">
             <div className="px-6 py-4">
-                {/* <h2 className="text-3xl font-bold text-center text-gray-700 dark:text-white">Brand</h2> */}
                 <div className="flex justify-center">
                     <img src={logo} className="rounded-full object-contain w-28" />
                 </div>
@@ -59,10 +53,10 @@ export default function Login({setLoggedIn}) {
 
                 <form onSubmit={handleSubmit}>
                     <div className="w-full mt-4">
-                        <input required className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" type="email" placeholder="Email Address" aria-label="Email Address" onChange={e => setEmail(e.target.value)}/>
+                        <input required className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" type="email" placeholder="Email Address" aria-label="Email Address" onChange={e => setEmail(e.target.value)} />
                     </div>
                     <div className="w-full mt-4">
-                        <input required className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" type="password" placeholder="Password" aria-label="Password" onChange={e => setPassword(e.target.value)}/>
+                        <input required className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" type="password" placeholder="Password" aria-label="Password" onChange={e => setPassword(e.target.value)} />
                     </div>
                     <div className="flex items-center justify-between mt-4">
                         <a href="#" className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500">Forgot Password?</a>

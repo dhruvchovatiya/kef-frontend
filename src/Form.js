@@ -7,8 +7,6 @@ import { useHistory } from 'react-router-dom'
 const FormData = require('form-data');
 
 
-
-
 export default function Form(props) {
 
   const history = useHistory()
@@ -16,11 +14,8 @@ export default function Form(props) {
   const [title, setTitle] = useState('')
   const [file, setFile] = useState()
   const [posted, setPosted] = useState(true)
-  // const formData = {
-  //   token: localStorage.getItem('token'),
-  //   desc: field,
-  //   title: title,
-  // }
+  const [tags, setTags] = useState('')
+
 
   useEffect(() => {
     setPosted(true)
@@ -35,9 +30,7 @@ export default function Form(props) {
     if(posted) {
 
       setPosted(false)
-      console.log(file)
       if (file) {
-        // console.log('here')
         imgurFormData.append('image', file)
         try {
           const res = await axios({
@@ -49,7 +42,6 @@ export default function Form(props) {
             data: imgurFormData
           })
           formData.img = res.data.data.link
-          console.log(res)
         } catch (err) {
           console.log(err)
         }
@@ -58,8 +50,8 @@ export default function Form(props) {
       formData.token = localStorage.getItem('token')
       formData.desc = field
       formData.title = title
+      formData.tags = tags
   
-      console.log(formData)
       if ((!title || !title.trim()) && props.msg != 'Solution') {
         alert('Title cannot be empty')
       }
@@ -68,7 +60,6 @@ export default function Form(props) {
       }
       else {
         if (props.msg != 'Solution') {
-          // console.log('hhh')
           try {
             const res = await axios.post('/api/posts', formData)
             if (res.status === 502) {
@@ -80,11 +71,10 @@ export default function Form(props) {
               alert('No response')
             } else {
               setPosted(true)
-              // title.value=''
-              console.log(res)
               props.setSubmitted(!props.submitted)
               setField('')
               setTitle('')
+              setTags('')
               history.push('/')
             }
   
@@ -102,7 +92,6 @@ export default function Form(props) {
             if (!res) {
               alert('No response')
             } else {
-              // console.log(res)
               props.setSubmitted(!props.submitted)
               setField('')
               setTitle('')
@@ -115,14 +104,11 @@ export default function Form(props) {
         }
       }
     }
-    else {console.log('wait!')}
   }
 
-  // console.log(file)
   const handleUpload = (e) => {
 
     setFile(e.target.files[0])
-    // console.log(file)
   }
 
   return (
@@ -133,16 +119,18 @@ export default function Form(props) {
           <label className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200">{'Your ' + props.msg + ':'}</label>
           {props.msg != 'Solution' && <textarea placeholder="Title of your question" className="block w-full mb-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" defaultValue={""} onChange={e => setTitle(e.target.value)} value={title} />}
 
-          {<textarea placeholder={"Describe your " + props.msg} className="block w-full h-40 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" defaultValue={""} onChange={e => setField(e.target.value)} value={field} />}
+          {<textarea placeholder={"Describe your " + props.msg} className="block mb-2 w-full h-40 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" defaultValue={""} onChange={e => setField(e.target.value)} value={field} />}
+          
+          <label className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200">{'Tags (Eg: maths,geometry,triangles):'}</label>
+          {<textarea placeholder={'Add tags seperated by commas. Eg- maths,algebra'} className="block w-full  px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" defaultValue={""} onChange={e => setTags(e.target.value)} value={tags} />}
+
         </div>
-        {/* {isEmpty && <h1 className="text-red-700 flex justify-center mt-4">Title can't be Empty</h1>} */}
         {posted && <div className="flex justify-center mt-4">
           <input id="fileButton" type="file" hidden onChange={handleUpload} />
-          <label for="fileButton" className={posted?"px-4 py-2 mx-2 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 cursor-pointer":"invisible"}>
+          <label for="fileButton" className={posted?"px-4 py-2 mx-2 text-white transition-colors duration-200 transform bg-blue-800 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-700 cursor-pointer":"invisible"}>
             Upload Image
           </label>
-          {/* <button className="px-4 py-2 mx-2 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600" onChange={handleUpload}>Upload Image</button> */}
-          <button className={posted?"px-4 py-2 mx-2 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 cursor-pointer":"invisible"} type="submit" onClick={handleSubmit}>Post</button>
+          <button className={posted?"px-4 py-2 mx-2 text-white transition-colors duration-200 transform bg-blue-800 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 cursor-pointer":"invisible"} type="submit" onClick={handleSubmit}>Post</button>
         </div>}
         {!posted && <div className="flex justify-center mt-4">
           <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-8 w-8 "></div>
